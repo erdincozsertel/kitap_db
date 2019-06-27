@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.Controller;
+
 /**
  * Servlet implementation class Login
  */
@@ -29,38 +31,8 @@ public class Login extends HttpServlet {
 		res.setContentType("text/html");
 		String username=req.getParameter("username");
 		String password=req.getParameter("password");
-		boolean loginStatus = false;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db","root","");
-	        Statement st = conn.createStatement();
-            String sql = "SELECT * FROM `users` WHERE `username` = '"+username+"'";
-            ResultSet rs= st.executeQuery(sql);
-            if(rs.next()==true)
-            {
-            	pw.println("User "+username+ " exist...!");
-                sql = "SELECT * FROM `users` WHERE `username` = '"+username+"' AND `password` = '"+password+"'";
-                rs= st.executeQuery(sql);
-                if(rs.next()==true) 
-                {
-                	pw.println("Password is true...!");
-                	loginStatus=true;
-                }
-                else
-                {
-                	pw.println("Wrong Password...!");
-                }
-            }
-            else
-            {
-            	pw.println("User "+username+ " does not exist...!");
-            }
-
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		boolean loginStatus;
+		loginStatus = Controller.control(username, password);
 		
 		if(loginStatus)
 		pw.println("Login Success...!");

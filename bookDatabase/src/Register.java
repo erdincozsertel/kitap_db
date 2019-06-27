@@ -36,6 +36,7 @@ public class Register extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 //		String idusers = "NULL";
+		int isAdmin = 0 ;
 		
 //		System.out.println(MD5edPass);
 //		String address = request.getParameter("address");
@@ -62,8 +63,7 @@ public class Register extends HttpServlet {
 	            }
 	            else
 	            {
-	            	sql = "INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`) VALUES (NULL, '"+username+"', '"+password+"', '0')";
-		            st.executeUpdate(sql);
+	            	sql = "INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`) VALUES (NULL, '"+username+"', '"+password+"', '"+isAdmin+"')";		            st.executeUpdate(sql);
 		            pw.println("Data is Successfully Inserted into users Table");
 		            insertSuccess=true;
 	            }
