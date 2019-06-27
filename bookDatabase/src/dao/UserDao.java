@@ -31,10 +31,10 @@ public class UserDao implements Dao<User> {
 
 	@Override
 	public void update(User user, String[] params) {
-		user.setUserName(Objects.requireNonNull(
+		user.setUsername(Objects.requireNonNull(
 				params[0], "Name cannot be null"));
 		user.setPassword(Objects.requireNonNull(
-				params[1], "Email cannot be null"));
+				params[1], "Password cannot be null"));
                
               users.add(user);
 				

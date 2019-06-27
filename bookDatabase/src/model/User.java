@@ -13,15 +13,30 @@ public class User {
 		this.password = password;
 		this.isAdmin = false;
 	}
-	public void setUserName(String username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
 	
-	public void getUserName() {
-		
+	String getUserName() {
+		return this.username;
+	}
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+	public String getIduser() {
+		return iduser;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public String getPassword() {
+		return password;
 	}
 	
 	
