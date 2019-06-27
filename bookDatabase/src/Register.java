@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.RegisterController;
+
 /**
  * Servlet implementation class Register
  */
@@ -36,8 +38,13 @@ public class Register extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 //		String idusers = "NULL";
-		int isAdmin = 0 ;
-		
+		int isAdmin;
+		if (request.getParameter("isAdmin") != null) {
+			isAdmin = Integer.parseInt(request.getParameter("isAdmin"));
+		}
+		else {
+			isAdmin=0;
+		}		
 //		System.out.println(MD5edPass);
 //		String address = request.getParameter("address");
 //		String contact = request.getParameter("contact");
@@ -50,28 +57,19 @@ public class Register extends HttpServlet {
 		else
 		{
 			boolean insertSuccess=false;
+			//Move to User Dao Insert begins here
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db","root","");
-		        Statement st = conn.createStatement();
-	            String sql = "SELECT * FROM `users` WHERE `username` = '"+username+"'";
-	            ResultSet rs= st.executeQuery(sql);
-	            pw.println(rs.next());
-	            if(rs.next()==true)
-	            {
-	            	pw.println("User "+username+" exist...!");
-	            }
-	            else
-	            {
-	            	sql = "INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`) VALUES (NULL, '"+username+"', '"+password+"', '"+isAdmin+"')";		            st.executeUpdate(sql);
-		            pw.println("Data is Successfully Inserted into users Table");
-		            insertSuccess=true;
-	            }
-	            
-	            
-	            
-
-
+	            	if (RegisterController.control(username, password, isAdmin)) {
+						Class.forName("com.mysql.jdbc.Driver");
+						Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db",
+								"root", "");
+						Statement st = conn.createStatement();
+						String sql = "INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`) VALUES (NULL, '"
+								+ username + "', '" + password + "', '" + isAdmin + "')";
+						ResultSet rs = st.executeQuery(sql);
+						pw.println("Data is Successfully Inserted into users Table");
+						insertSuccess = true;
+					}         
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO Auto-generated catch block
 				insertSuccess=false;
@@ -79,6 +77,7 @@ public class Register extends HttpServlet {
 				req.include(request, response);
 				e.printStackTrace();
 			}
+			//Move to User Dao Insert ends here
 			if(insertSuccess)
 			{
 				RequestDispatcher req = request.getRequestDispatcher("reg_Success.html");
@@ -86,7 +85,7 @@ public class Register extends HttpServlet {
 			}
 			else
 			{
-				pw.println("<meta http-equiv='refresh' content='3;URL=index.html'>");//redirects after 3 seconds
+				pw.println("<meta http-equiv='refresh' content='3;URL=register.html'>");//redirects after 3 seconds
 				pw.println("<p style='color:red;'>"+"User "+username+" exist...!" +"</p>");
 			}
 		}

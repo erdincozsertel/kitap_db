@@ -1,13 +1,14 @@
 package controller;
 
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Controller {
+import javax.servlet.RequestDispatcher;
+
+public class LoginController {
 	
 	public boolean controler() {
 		return false;		
@@ -52,18 +53,6 @@ public class Controller {
 		return false;		
 	}
 	
-	public boolean control(String username, String Password, int isAdmin) 
-	//Register Controller
-	{
-
-		return false;		
-	}
 	
-	public boolean control(String bookName, String bookWriter, String bookPublisher, String bookCategory) 
-	//Book Controller
-	{
-
-		return false;		
-	}
 
 }

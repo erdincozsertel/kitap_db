@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controller.Controller;
+import controller.LoginController;
 
 /**
  * Servlet implementation class Login
@@ -32,10 +32,11 @@ public class Login extends HttpServlet {
 		String username=req.getParameter("username");
 		String password=req.getParameter("password");
 		boolean loginStatus;
-		loginStatus = Controller.control(username, password);
+		loginStatus = LoginController.control(username, password);
 		
 		if(loginStatus)
 		pw.println("Login Success...!");
+		//Sesion start
 		else
 		pw.println("Login Failed...!");
 		pw.close();
