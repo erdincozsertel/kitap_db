@@ -2,8 +2,11 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -32,10 +35,11 @@ public class BookRegister extends HttpServlet {
 		String writerN = request.getParameter("writerName");
 		String publisherN = request.getParameter("publisherName");
 		String category = request.getParameter("categoryName");
+//		String idbooks = "NULL";
 		
 		if(bookN.isEmpty() || writerN.isEmpty() || publisherN.isEmpty() || category.isEmpty())
 		{
-			RequestDispatcher req = request.getRequestDispatcher("BookRegister.html");
+			RequestDispatcher req = request.getRequestDispatcher("bookRegister.html");
 			req.include(request, response);
 		}
 		else

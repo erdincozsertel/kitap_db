@@ -35,7 +35,7 @@ public class Register extends HttpServlet {
 //		String last_name = request.getParameter("last_name");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		String idusers = "NULL";
+//		String idusers = "NULL";
 		
 //		System.out.println(MD5edPass);
 //		String address = request.getParameter("address");
@@ -51,18 +51,18 @@ public class Register extends HttpServlet {
 			boolean insertSuccess=false;
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-	            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db","root","");
-	            Statement st = conn.createStatement();
-	            
+				Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db","root","");
+		        Statement st = conn.createStatement();
 	            String sql = "SELECT * FROM `users` WHERE `username` = '"+username+"'";
 	            ResultSet rs= st.executeQuery(sql);
-	            if(rs.next())
+	            pw.println(rs.next());
+	            if(rs.next()==true)
 	            {
 	            	pw.println("User "+username+" exist...!");
 	            }
 	            else
 	            {
-	            	sql = "INSERT INTO `users` (`idusers`, `username`, `uPass`, `isAdmin`) VALUES ('"+idusers+"','"+username+"','"+password+"','"+0+"')";
+	            	sql = "INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`) VALUES (NULL, '"+username+"', '"+password+"', '0')";
 		            st.executeUpdate(sql);
 		            pw.println("Data is Successfully Inserted into users Table");
 		            insertSuccess=true;
@@ -87,8 +87,7 @@ public class Register extends HttpServlet {
 			else
 			{
 				pw.println("<meta http-equiv='refresh' content='3;URL=index.html'>");//redirects after 3 seconds
-            	pw.println("User "+username+" exist...!");
-				pw.println("<p style='color:red;'>User or password incorrect!</p>");
+				pw.println("<p style='color:red;'>"+"User "+username+" exist...!" +"</p>");
 			}
 		}
 	}

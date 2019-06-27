@@ -36,14 +36,14 @@ public class Login extends HttpServlet {
 	        Statement st = conn.createStatement();
             String sql = "SELECT * FROM `users` WHERE `username` = '"+username+"'";
             ResultSet rs= st.executeQuery(sql);
-            if(rs.next())
+            if(rs.next()==true)
             {
-//            	pw.println("User "+user+ " exist...!");
-            	st = conn.createStatement();
-                sql = "SELECT * FROM `users` WHERE `username` = '"+username+"' AND 'password' = '"+password+"'";
+            	pw.println("User "+username+ " exist...!");
+                sql = "SELECT * FROM `users` WHERE `username` = '"+username+"' AND `password` = '"+password+"'";
                 rs= st.executeQuery(sql);
-                if(rs.next()) 
+                if(rs.next()==true) 
                 {
+                	pw.println("Password is true...!");
                 	loginStatus=true;
                 }
                 else
@@ -61,7 +61,6 @@ public class Login extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
 		
 		if(loginStatus)
 		pw.println("Login Success...!");
