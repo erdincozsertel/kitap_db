@@ -1,43 +1,57 @@
 package controller;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class RegisterController {
-	
-	public boolean controler() {
-		return false;		
-	}
-	
-	public static boolean control(String username, String Password, int isAdmin) 
-	//Register Controller
-	{
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db","root","");
-	        Statement st = conn.createStatement();
-            String sql = "SELECT * FROM `users` WHERE `username` = '"+username+"'";
-            ResultSet rs= st.executeQuery(sql);
-            if(rs.next()==true)
-            {
-            	System.out.println("User "+username+" exist...!");
-            	return false;
-            }
-            else
-            {
-            	return true;
-            }  
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+import dao.UserDao;
+import dao.UserDaoImpl;
+import model.User;
+
+/**
+ * Servlet implementation class Register
+ */
+@WebServlet("/registerController")
+public class RegisterController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		PrintWriter pw = response.getWriter();
+		response.setContentType("text/html");
+
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+
+		if (username.isEmpty() || password.isEmpty()) {
+			RequestDispatcher req = request.getRequestDispatcher("register.html");
+			req.include(request, response);
+		} else {
+			boolean insertSuccess = false;
+
+			User user = new User(username, password);
+
+			UserDao userDao = new UserDaoImpl();
+			insertSuccess = userDao.save(user);
+
+			if (insertSuccess) {
+				RequestDispatcher req = request.getRequestDispatcher("reg_Success.html");
+				req.forward(request, response);
+			} else {
+				pw.println("<meta http-equiv='refresh' content='3;URL=register.html'>");// redirects after 3 seconds
+				pw.println("<p style='color:red;'>" + "User " + username + " exist...!" + "</p>");
+			}
 		}
-			
 	}
-
 }

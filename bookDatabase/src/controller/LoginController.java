@@ -1,59 +1,46 @@
 package controller;
 
-import java.sql.Connection;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class LoginController {
-	
-	public boolean controler() {
-		return false;		
+import dao.UserDao;
+import dao.UserDaoImpl;
+import model.User;
+
+/**
+ * Servlet implementation class Login
+ */
+@WebServlet("/loginController")
+public class LoginController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+		String username = req.getParameter("username");
+		String password = req.getParameter("password");
+		User user = new User(username, password);
+
+		boolean loginStatus;
+		UserDao userDao = new UserDaoImpl();
+		loginStatus = userDao.isUser(user);
+
+		if (loginStatus)
+			pw.println("Login Success...!");
+		// Sesion start
+		else
+			pw.println("Login Failed...!");
+		pw.close();
 	}
-	public static boolean control(String username, String password)
-	//Login Controller
-	{	
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db","root","");
-	        Statement st = conn.createStatement();
-            String sql = "SELECT * FROM `users` WHERE `username` = '"+username+"'";
-            ResultSet rs= st.executeQuery(sql);
-            if(rs.next()==true)
-            {
-            	System.out.println("User "+username+ " exist...!");
-                sql = "SELECT * FROM `users` WHERE `username` = '"+username+"' AND `password` = '"+password+"'";
-                rs= st.executeQuery(sql);
-                if(rs.next()==true) 
-                {
-                	System.out.println("Password is true...!");
-                	return true;
-                }
-                else
-                {
-                	System.out.println("Wrong Password...!");
-                	return false;
-                }
-            }
-            else
-            {
-            	System.out.println("User "+username+ " does not exist...!");
-            	return false;
-            }
-
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return false;		
-	}
-	
-	
 
 }

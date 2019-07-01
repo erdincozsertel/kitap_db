@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,22 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.BookDao;
+import dao.BookDaoImpl;
 import model.Book;
 
 /**
  * Servlet implementation class BookController
  */
-@WebServlet("/bookRegister")
+@WebServlet("/bookController")
 public class BookController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public BookController() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -34,7 +30,6 @@ public class BookController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		PrintWriter pw = response.getWriter();
 		response.setContentType("text/html");
 		String bookN = request.getParameter("bookName");
 		String writerN = request.getParameter("writerName");
@@ -46,7 +41,7 @@ public class BookController extends HttpServlet {
 			RequestDispatcher req = request.getRequestDispatcher("bookRegister.html");
 			req.include(request, response);
 		} else {
-			BookDao bookDao = new BookDao();
+			BookDao bookDao = new BookDaoImpl();
 			bookDao.save(book);
 			RequestDispatcher req = request.getRequestDispatcher("reg_Success.html");
 			req.forward(request, response);
