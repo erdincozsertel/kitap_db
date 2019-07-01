@@ -57,27 +57,7 @@ public class Register extends HttpServlet {
 		else
 		{
 			boolean insertSuccess=false;
-			//Move to User Dao Insert begins here
-			try {
-	            	if (RegisterController.control(username, password, isAdmin)) {
-						Class.forName("com.mysql.jdbc.Driver");
-						Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db",
-								"root", "");
-						Statement st = conn.createStatement();
-						String sql = "INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`) VALUES (NULL, '"
-								+ username + "', '" + password + "', '" + isAdmin + "')";
-						ResultSet rs = st.executeQuery(sql);
-						pw.println("Data is Successfully Inserted into users Table");
-						insertSuccess = true;
-					}         
-			} catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				insertSuccess=false;
-				RequestDispatcher req = request.getRequestDispatcher("register.html");
-				req.include(request, response);
-				e.printStackTrace();
-			}
-			//Move to User Dao Insert ends here
+			
 			if(insertSuccess)
 			{
 				RequestDispatcher req = request.getRequestDispatcher("reg_Success.html");
@@ -90,5 +70,4 @@ public class Register extends HttpServlet {
 			}
 		}
 	}
-
 }
