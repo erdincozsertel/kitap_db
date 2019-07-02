@@ -3,7 +3,12 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
 
 import model.Book;
 
@@ -55,51 +60,93 @@ public class BookDaoImpl implements BookDao {
 
 	@Override
 	public void save(Book book) {
-//		String bookId = book.getBookId().toString();
+
+		Connection connection = DaoConnection.connect();
+		PreparedStatement preparedStmt = null;
 		String bookName = book.getBookName();
 		String bookWriter = book.getBookWriter();
 		String bookPublisher = book.getBookPublisher();
 		String bookCategory = book.getBookCategory();
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db", "root", "");
-			// the mysql insert statement
 
 			String query = " INSERT INTO `books` (`bId`, `bName`, `bWriter`, `bPublisher`, `category`) VALUES (NULL, ?, ?, ?, ?)";
 
-			// create the mysql insert preparedstatement
-			PreparedStatement preparedStmt = conn.prepareStatement(query);
-//				preparedStmt.setString(1, bookId);
+			preparedStmt = connection.prepareStatement(query);
 			preparedStmt.setString(1, bookName);
 			preparedStmt.setString(2, bookWriter);
 			preparedStmt.setString(3, bookPublisher);
 			preparedStmt.setString(4, bookCategory);
 			preparedStmt.execute();
 
-//				if (preparedStmt.getResultSet()!=null) {
 			System.out.println("Data is Successfully Inserted into users Table");
-//				} else {
-//					System.out.println("Error!");
-//				}
 
-//				return true;
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (SQLException e) {
 			System.out.println("Book save catch");
 			e.printStackTrace();
+		} finally {
+			DaoConnection.closeAll(preparedStmt, connection);
 		}
 
 	}
 
 	@Override
-	public void update(Book book, String[] params) {
-		// TODO Update From database
+	public List<Book> getBookList() throws ServletException {
+		Connection connection = DaoConnection.connect();
+		PreparedStatement preparedStmt = null;
+		try {
+			String query = " SELECT * FROM `books` ";
+			preparedStmt = connection.prepareStatement(query);
+
+			ResultSet rs = preparedStmt.executeQuery(query);
+			List<Book> list = new ArrayList<Book>();
+
+			while (rs.next()) {
+				Integer bId = rs.getInt("bId");
+				String bName = rs.getString("bName");
+				String bWriter = rs.getString("bWriter");
+				String bPublisher = rs.getString("bPublisher");
+				String category = rs.getString("category");
+				Book book = new Book(bId, bName, bWriter, bPublisher, category);
+				list.add(book);
+			}
+			return list;
+		} catch (SQLException e) {
+			System.out.println("An error occured while retrieving " + "all employees: " + e.toString());
+		} finally {
+			DaoConnection.closeAll(preparedStmt, connection);
+		}
+		return null;
+	}
+
+	@Override
+	public void update(Integer bookId, String[] params) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void delete(Book book) {
-		// TODO This function will delete user from db
+	public void delete(Integer bookId) {
+		Connection connection = DaoConnection.connect();
+		PreparedStatement preparedStmt = null;
+		System.out.println("ok");
+		try {
+
+			String query = " DELETE FROM `books` WHERE `bId`= ? ";
+
+			preparedStmt = connection.prepareStatement(query);
+			preparedStmt.setLong(1, bookId);
+
+			preparedStmt.execute();
+
+			System.out.println("Data is Successfully Deleted.");
+
+		} catch (SQLException e) {
+			System.out.println("Book delete catch");
+			e.printStackTrace();
+		} finally {
+			DaoConnection.closeAll(preparedStmt, connection);
+		}
 
 	}
 

@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,22 +25,28 @@ public class LoginController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		PrintWriter pw = res.getWriter();
-		res.setContentType("text/html");
-		String username = req.getParameter("username");
-		String password = req.getParameter("password");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		PrintWriter pw = response.getWriter();
+		response.setContentType("text/html");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
 		User user = new User(username, password);
 
 		boolean loginStatus;
 		UserDao userDao = new UserDaoImpl();
 		loginStatus = userDao.isUser(user);
 
-		if (loginStatus)
+		if (loginStatus) {
 			pw.println("Login Success...!");
-		// Sesion start
-		else
+			// TODO Session start
+			RequestDispatcher req = request.getRequestDispatcher("index.jsp");
+			req.forward(request, response);
+		} else {
 			pw.println("Login Failed...!");
+			RequestDispatcher req = request.getRequestDispatcher("login.html");
+			req.forward(request, response);
+		}
 		pw.close();
 	}
 

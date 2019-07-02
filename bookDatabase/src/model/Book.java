@@ -25,6 +25,15 @@ public class Book {
 		this.bookCategory = book.getBookCategory();
 	}
 
+	public Book(Integer bookId, String bookName, String bookWriter, String bookPublisher, String bookCategory) {
+		super();
+		this.bookId = bookId;
+		this.bookName = bookName;
+		this.bookWriter = bookWriter;
+		this.bookPublisher = bookPublisher;
+		this.bookCategory = bookCategory;
+	}
+
 	public Integer getBookId() {
 		return bookId;
 	}

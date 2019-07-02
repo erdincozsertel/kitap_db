@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -31,22 +33,63 @@ public class BookController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html");
-		String bookN = request.getParameter("bookName");
-		String writerN = request.getParameter("writerName");
-		String publisherN = request.getParameter("publisherName");
-		String category = request.getParameter("categoryName");
-		Book book = new Book(bookN, writerN, publisherN, category);
+		String bookName = request.getParameter("bookName");
+		String writerName = request.getParameter("writerName");
+		String publisherName = request.getParameter("publisherName");
+		String bookCategory = request.getParameter("categoryName");
+		Book book = new Book(bookName, writerName, publisherName, bookCategory);
 
-		if (bookN.isEmpty() || writerN.isEmpty() || publisherN.isEmpty() || category.isEmpty()) {
+		if (bookName.isEmpty() || writerName.isEmpty() || publisherName.isEmpty() || bookCategory.isEmpty()) {
 			RequestDispatcher req = request.getRequestDispatcher("bookRegister.html");
 			req.include(request, response);
 		} else {
 			BookDao bookDao = new BookDaoImpl();
 			bookDao.save(book);
-			RequestDispatcher req = request.getRequestDispatcher("reg_Success.html");
+			RequestDispatcher req = request.getRequestDispatcher("ListBook.jsp");
 			req.forward(request, response);
 
 		}
+
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		BookDao bookDao = new BookDaoImpl();
+		List<Book> bookList = bookDao.getBookList();
+		request.setAttribute("bookList", bookList);
+		RequestDispatcher req = request.getRequestDispatcher("ListBook.jsp");
+		req.forward(request, response);
+	}
+
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter ("deleteButton");
+		Integer bookId = Integer.valueOf(id);
+
+
+		System.out.println("bookController");
+		PrintWriter pw = response.getWriter();
+		pw.println(id);
+		//
+		BookDao bookDao = new BookDaoImpl();
+		bookDao.delete(bookId);
+		super.doDelete(request, response);
+	}
+
+	@Override
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter ("deleteButton");
+		Integer bookId = Integer.valueOf(id);
+
+
+		System.out.println("bookController");
+		PrintWriter pw = response.getWriter();
+		pw.println(id);
+		//
+		BookDao bookDao = new BookDaoImpl();
+		bookDao.delete(bookId);
+		super.doPut(request, response);
 	}
 
 }
