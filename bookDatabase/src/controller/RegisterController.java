@@ -46,7 +46,7 @@ public class RegisterController extends HttpServlet {
 			insertSuccess = userDao.save(user);
 
 			if (insertSuccess) {
-				RequestDispatcher req = request.getRequestDispatcher("reg_Success.html");
+				RequestDispatcher req = request.getRequestDispatcher("index.jsp");
 				req.forward(request, response);
 			} else {
 				pw.println("<meta http-equiv='refresh' content='3;URL=register.html'>");// redirects after 3 seconds

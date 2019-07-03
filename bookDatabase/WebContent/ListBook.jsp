@@ -29,8 +29,8 @@
 					<td>${book.bookPublisher}</td>
 					<td>${book.bookCategory}</td>
 					<form action=bookController>
-					<td><button type="submit" name="editButton" value=${book.bookId} formmethod="put">Edit</button></td>
-					<td><button type="submit" name="deleteButton" value=${book.bookId}	formmethod="delete">Delete!</button></td>
+					<td><button type="submit" name="editButton" value=${book.bookId} formmethod="post">Edit</button></td>
+					<td><button type="submit" name="deleteButton" value=${book.bookId}	formmethod="post">Delete!</button></td>
 					</form>
 				</tr>
 			</c:forEach>

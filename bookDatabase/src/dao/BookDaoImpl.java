@@ -120,9 +120,35 @@ public class BookDaoImpl implements BookDao {
 	}
 
 	@Override
-	public void update(Integer bookId, String[] params) {
-		// TODO Auto-generated method stub
+	public void update(Book book) {
+		Connection connection = DaoConnection.connect();
+		PreparedStatement preparedStmt = null;
+		String bookId = book.getBookId().toString();
+		String bookName = book.getBookName();
+		String bookWriter = book.getBookWriter();
+		String bookPublisher = book.getBookPublisher();
+		String bookCategory = book.getBookCategory();
 
+		try {
+
+			String query = " UPDATE `books` SET `bName` = ?, `bWriter` = ?, `bPublisher` = ?, `category` = ? WHERE `books`.`bId` = ?";
+			preparedStmt = connection.prepareStatement(query);
+
+			preparedStmt.setString(1, bookName);
+			preparedStmt.setString(2, bookWriter);
+			preparedStmt.setString(3, bookPublisher);
+			preparedStmt.setString(4, bookCategory);
+			preparedStmt.setString(5, bookId);
+			preparedStmt.execute();
+
+			System.out.println("Data is Successfully updated");
+
+		} catch (SQLException e) {
+			System.out.println("Book save catch");
+			e.printStackTrace();
+		} finally {
+			DaoConnection.closeAll(preparedStmt, connection);
+		}
 	}
 
 	@Override
@@ -148,6 +174,47 @@ public class BookDaoImpl implements BookDao {
 			DaoConnection.closeAll(preparedStmt, connection);
 		}
 
+	}
+
+	@Override
+	public Book getBook(Integer bookId) {
+		Connection connection = DaoConnection.connect();
+		PreparedStatement preparedStmt = null;
+		String bId = bookId.toString(); 
+		String bookName;
+		String bookWriter;
+		String bookPublisher;
+		String bookCategory;
+		Book book = null;
+		try {
+
+			String query = "SELECT * FROM `books` WHERE `bId` = ?";
+
+			preparedStmt = connection.prepareStatement(query);
+			preparedStmt.setString(1, bId);
+
+			ResultSet rs=null;
+			preparedStmt.execute();
+			rs=preparedStmt.getResultSet();
+
+//			while (rs.next()) {
+				rs.next();
+				bookName = rs.getString("bName");
+				bookWriter = rs.getString("bWriter");
+				bookPublisher = rs.getString("bPublisher");
+				bookCategory = rs.getString("category");
+				book = new Book(bookId, bookName, bookWriter, bookPublisher, bookCategory);
+//			}
+			System.out.println("Book is Successfully Found.");
+			return book;
+
+		} catch (SQLException e) {
+			System.out.println("Book select catch");
+			e.printStackTrace();
+		} finally {
+			DaoConnection.closeAll(preparedStmt, connection);
+		}
+		return null;
 	}
 
 }

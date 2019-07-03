@@ -11,10 +11,12 @@ public interface BookDao {
 	
 	void save (Book book);
 
-	void update(Integer bookId, String[] params);
+	void update(Book book);
 
 	void delete(Integer bookId);
 	
+	Book getBook(Integer bookId);
+		
 	List<Book> getBookList() throws ServletException;
 
 }

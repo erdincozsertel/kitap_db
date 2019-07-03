@@ -19,6 +19,7 @@ public class Book {
 
 	public Book(Book book) {
 		super();
+		this.bookId = book.getBookId();
 		this.bookName = book.getBookName();
 		this.bookWriter = book.getBookWriter();
 		this.bookPublisher = book.getBookPublisher();
