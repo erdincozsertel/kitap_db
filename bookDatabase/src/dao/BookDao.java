@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,5 +19,7 @@ public interface BookDao {
 	Book getBook(Integer bookId);
 		
 	List<Book> getBookList() throws ServletException;
+	
+	Date getInsertDate(Integer bookId);
 
 }

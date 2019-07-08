@@ -7,12 +7,33 @@ public class User {
 	private String username;
 	private String password;
 	private Integer isAdmin;
+	public enum Gender {MALE, FEMALE};
+	private Gender gender;
+
+	public User(String username, String password, Gender gender) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.isAdmin = 0;
+		this.gender = gender;
+	}
+	
+	
 
 	public User(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.isAdmin = 0;
+	}
+
+
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	public void setUsername(String username) {
@@ -50,4 +71,13 @@ public class User {
 	public void setIduser(int iduser) {
 		this.iduser = iduser;
 	}
+
+	public Integer getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Integer isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+	
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.math.BigDecimal;
+
 public class Book {
 
 	private Integer bookId;
@@ -7,14 +9,19 @@ public class Book {
 	private String bookName;
 	private String bookWriter;
 	private String bookPublisher;
-	private String bookCategory;
+	private BigDecimal bookPrice;
+	private Category bookCategory;
+	private String insertDate;
 
-	public Book(String bookName, String bookWriter, String bookPublisher, String bookCategory) {
+	public Book(String bookName, String bookWriter, String bookPublisher, BigDecimal bookPrice, Category bookCategory,
+			String insertDate) {
 		super();
 		this.bookName = bookName;
 		this.bookWriter = bookWriter;
 		this.bookPublisher = bookPublisher;
+		this.bookPrice = bookPrice;
 		this.bookCategory = bookCategory;
+		this.insertDate = insertDate;
 	}
 
 	public Book(Book book) {
@@ -23,16 +30,21 @@ public class Book {
 		this.bookName = book.getBookName();
 		this.bookWriter = book.getBookWriter();
 		this.bookPublisher = book.getBookPublisher();
+		this.bookPrice = book.getBookPrice();
 		this.bookCategory = book.getBookCategory();
+		this.insertDate = book.getInsertDate();
 	}
 
-	public Book(Integer bookId, String bookName, String bookWriter, String bookPublisher, String bookCategory) {
+	public Book(Integer bookId, String bookName, String bookWriter, String bookPublisher, BigDecimal bookPrice,
+			Category bookCategory, String insertDate) {
 		super();
 		this.bookId = bookId;
 		this.bookName = bookName;
 		this.bookWriter = bookWriter;
 		this.bookPublisher = bookPublisher;
+		this.bookPrice = bookPrice;
 		this.bookCategory = bookCategory;
+		this.insertDate = insertDate;
 	}
 
 	public Integer getBookId() {
@@ -67,12 +79,30 @@ public class Book {
 		this.bookPublisher = bookPublisher;
 	}
 
-	public String getBookCategory() {
+	public Category getBookCategory() {
 		return bookCategory;
 	}
 
-	public void setBookCategory(String bookCategory) {
+	public void setBookCategory(Category bookCategory) {
 		this.bookCategory = bookCategory;
 	}
+
+	public BigDecimal getBookPrice() {
+		return bookPrice;
+	}
+
+	public void setBookPrice(BigDecimal bookPrice) {
+		this.bookPrice = bookPrice;
+	}
+
+	public String getInsertDate() {
+		return insertDate;
+	}
+
+	public void setInsertDate(String insertDate) {
+		this.insertDate = insertDate;
+	}
+
+
 
 }

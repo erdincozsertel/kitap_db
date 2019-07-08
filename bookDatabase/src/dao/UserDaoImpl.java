@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import model.User;
+import model.User.Gender;
 
 public class UserDaoImpl implements UserDao {
 
@@ -16,12 +17,15 @@ public class UserDaoImpl implements UserDao {
 		PreparedStatement preparedStmt = null;
 		String username = user.getUsername();
 		String password = user.getPassword();
+		Gender gender = user.getGender();
 		try {
-			String query = " INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`) VALUES (NULL, ?, ?, 0)";
+			String query = "INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`, `gender`) "
+					+ "VALUES (NULL, ?, ?, 0, ?)";
 
 			preparedStmt = connection.prepareStatement(query);
 			preparedStmt.setString(1, username);
 			preparedStmt.setString(2, password);
+			preparedStmt.setString(3, gender.toString());
 			preparedStmt.execute();
 			System.out.println("Data is Successfully Inserted into users Table");
 			return true;

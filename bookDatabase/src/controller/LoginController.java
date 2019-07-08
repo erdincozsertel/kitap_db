@@ -31,6 +31,7 @@ public class LoginController extends HttpServlet {
 		response.setContentType("text/html");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		
 		User user = new User(username, password);
 
 		boolean loginStatus;
@@ -40,11 +41,12 @@ public class LoginController extends HttpServlet {
 		if (loginStatus) {
 			pw.println("Login Success...!");
 			// TODO Session start
-			RequestDispatcher req = request.getRequestDispatcher("index.jsp");
-			req.forward(request, response);
+//			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/index.jsp");
+//			req.forward(request, response);
+			response.sendRedirect("/bookDatabase");
 		} else {
 			pw.println("Login Failed...!");
-			RequestDispatcher req = request.getRequestDispatcher("login.html");
+			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/login.html");
 			req.forward(request, response);
 		}
 		pw.close();

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.UserDao;
 import dao.UserDaoImpl;
 import model.User;
+import model.User.Gender;
 
 /**
  * Servlet implementation class Register
@@ -35,19 +36,20 @@ public class RegisterController extends HttpServlet {
 		String password = request.getParameter("password");
 
 		if (username.isEmpty() || password.isEmpty()) {
-			RequestDispatcher req = request.getRequestDispatcher("register.html");
+			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/register.html");
 			req.include(request, response);
 		} else {
 			boolean insertSuccess = false;
-
-			User user = new User(username, password);
+			Gender gender = Gender.valueOf(request.getParameter("gender"));
+			User user = new User(username, password, gender);
 
 			UserDao userDao = new UserDaoImpl();
 			insertSuccess = userDao.save(user);
 
 			if (insertSuccess) {
-				RequestDispatcher req = request.getRequestDispatcher("index.jsp");
-				req.forward(request, response);
+//				RequestDispatcher req = request.getRequestDispatcher("/");
+//				req.forward(request, response);
+				response.sendRedirect("/bookDatabase");
 			} else {
 				pw.println("<meta http-equiv='refresh' content='3;URL=register.html'>");// redirects after 3 seconds
 				pw.println("<p style='color:red;'>" + "User " + username + " exist...!" + "</p>");

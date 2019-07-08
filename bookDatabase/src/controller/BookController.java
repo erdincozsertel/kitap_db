@@ -2,7 +2,11 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.BookDao;
 import dao.BookDaoImpl;
 import model.Book;
+import model.Category;
 
 /**
  * Servlet implementation class BookController
@@ -39,10 +44,19 @@ public class BookController extends HttpServlet {
 		String bookName = request.getParameter("bookName");
 		String writerName = request.getParameter("writerName");
 		String publisherName = request.getParameter("publisherName");
-		String bookCategory = request.getParameter("categoryName");
-		Book book = new Book(bookName, writerName, publisherName, bookCategory);
-		if (bookName.isEmpty() || writerName.isEmpty() || publisherName.isEmpty() || bookCategory.isEmpty()) {
-			request.getRequestDispatcher("bookRegister.html").forward(request, response);
+		BigDecimal bookPrice = new BigDecimal(request.getParameter("bookPrice"));
+		Category bookCategory = new Category(Integer.valueOf(request.getParameter("bCategory")));
+
+		LocalDateTime localDate = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String formattedDateTime = localDate.format(formatter);
+		
+//		Date insertDate = Date.valueOf(formattedDateTime);
+//		System.out.println(insertDate);
+
+		Book book = new Book(bookName, writerName, publisherName, bookPrice, bookCategory, formattedDateTime);
+		if (bookName.isEmpty() || writerName.isEmpty() || publisherName.isEmpty()) {
+			request.getRequestDispatcher("/WEB-INF/bookRegister.html").forward(request, response);
 		} else {
 			BookDao bookDao = new BookDaoImpl();
 			bookDao.save(book);
@@ -71,18 +85,17 @@ public class BookController extends HttpServlet {
 			throws SQLException, IOException, ServletException {
 		BookDao bookDao = new BookDaoImpl();
 		Book book = bookDao.getBook(Integer.valueOf(request.getParameter("editButton")));
-		if (book!=null){
-			List<Book> bookList= new ArrayList<Book>();
+		if (book != null) {
+			List<Book> bookList = new ArrayList<Book>();
 			bookList.add(book);
 			request.setAttribute("bookList", bookList);
-			RequestDispatcher req = request.getRequestDispatcher("bookEdit.jsp");
+			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/bookEdit.jsp");
+			req.forward(request, response);
+		} else {
+			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/index.jsp");
 			req.forward(request, response);
 		}
-		else {
-			RequestDispatcher req = request.getRequestDispatcher("index.jsp");
-			req.forward(request, response);
-		}
-	
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -114,25 +127,28 @@ public class BookController extends HttpServlet {
 	private void editBook(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 		response.setContentType("text/html");
+		BookDao bookDao = new BookDaoImpl();
 
 		String id = request.getParameter("bookId");
 		Integer bookId = Integer.valueOf(id);
 		String bookName = request.getParameter("bookName");
 		String writerName = request.getParameter("writerName");
 		String publisherName = request.getParameter("publisherName");
-		String bookCategory = request.getParameter("categoryName");
-		Book book = new Book(bookId, bookName, writerName, publisherName, bookCategory);
-		if (bookName.isEmpty() || writerName.isEmpty() || publisherName.isEmpty() || bookCategory.isEmpty()) {
+		BigDecimal bookPrice = new BigDecimal(request.getParameter("bookPrice"));
+		Category bookCategory = new Category(Integer.valueOf(request.getParameter("categoryName")));
+		String insertDate = request.getParameter("bDate");
+//		Date insertDate = bookDao.getInsertDate(bookId);
+		Book book = new Book(bookId, bookName, writerName, publisherName, bookPrice, bookCategory, insertDate);
+		if (bookName.isEmpty() || writerName.isEmpty() || publisherName.isEmpty()) {
 			request.setAttribute("book", book);
-			RequestDispatcher req = request.getRequestDispatcher("bookEdit.jsp");
-			req.forward(request, response);		
-			} else {
-			BookDao bookDao = new BookDaoImpl();
+			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/bookEdit.jsp");
+			req.forward(request, response);
+		} else {
 			bookDao.update(book);
 //			request.getRequestDispatcher("index.jsp").forward(request, response);
 			doGet(request, response);
 		}
-		
+
 	}
 
 	@Override
@@ -141,7 +157,7 @@ public class BookController extends HttpServlet {
 		BookDao bookDao = new BookDaoImpl();
 		List<Book> bookList = bookDao.getBookList();
 		request.setAttribute("bookList", bookList);
-		RequestDispatcher req = request.getRequestDispatcher("ListBook.jsp");
+		RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/ListBook.jsp");
 		req.forward(request, response);
 	}
 

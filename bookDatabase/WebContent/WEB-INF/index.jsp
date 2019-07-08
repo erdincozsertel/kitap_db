@@ -13,26 +13,20 @@
 	<h1>Index Page</h1>
 
 	<!-- Show only when not in Session -->
-	<form action="register.html" style="border: 1px solid #ccc"
+	<form action="" style="border: 1px solid #ccc"
 		method="post">
-
-		<input type="submit" value="Sign Up">
-
+		<input type="submit"  name="SignUp" value="Sign Up">
 	</form>
 
 	<!-- Show only when not in Session -->
-	<form action="login.html" style="border: 1px solid #ccc" method="post">
-
-		<input type="submit" value="Log In">
-
+	<form action="" style="border: 1px solid #ccc" method="post">
+		<input type="submit" name="LogIn" value="Log In">
 	</form>
 
 	<!-- Show only when user is a admin-->
-	<form action="bookRegister.html" style="border: 1px solid #ccc"
+	<form action="" style="border: 1px solid #ccc"
 		method="post">
-
-		<input type="submit" value="Book Register">
-
+		<input type="submit" name="BookRegister" value="Book Register">
 	</form>
 
 	<!-- Show only when in Session -->
@@ -49,7 +43,7 @@
 			<caption>List of books</caption>
 			<tr>
 
-<!-- 			<th>Book ID</th> -->
+			<!--<th>Book ID</th> -->
 				<th>Book Name</th>
 				<th>Book Writer</th>
 				<th>Book Publisher</th>
@@ -61,7 +55,10 @@
 					<td>${book.bookWriter}</td>
 					<td>${book.bookPublisher}</td>
 					<td>${book.bookCategory}</td>
-
+<!-- 					<form action=bookController> -->
+<!-- 					<td><button type="submit" name="editButton" value=${book.bookId} formmethod="post">Edit</button></td> -->
+<!-- 					<td><button type="submit" name="deleteButton" value=${book.bookId}	formmethod="post">Delete!</button></td> -->
+<!-- 					</form> -->
 				</tr>
 			</c:forEach>
 		</table>
