@@ -2,6 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,14 +37,21 @@ public class RegisterController extends HttpServlet {
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		Gender gender = Gender.valueOf(request.getParameter("gender"));
+//		java.util.Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("birthDate"));
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate localBirthDate = LocalDate.parse(request.getParameter("birthDate"));
+		Date birthDate = Date.valueOf(localBirthDate);
 
-		if (username.isEmpty() || password.isEmpty()) {
+
+		
+
+		if (username.isEmpty() || password.isEmpty() || birthDate==null) {
 			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/register.html");
 			req.include(request, response);
 		} else {
 			boolean insertSuccess = false;
-			Gender gender = Gender.valueOf(request.getParameter("gender"));
-			User user = new User(username, password, gender);
+			User user = new User(username, password, gender, birthDate);
 
 			UserDao userDao = new UserDaoImpl();
 			insertSuccess = userDao.save(user);

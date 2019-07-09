@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Date;
+
 public class User {
 
 	private Integer iduser;
@@ -7,26 +9,26 @@ public class User {
 	private String username;
 	private String password;
 	private Integer isAdmin;
+
 	public enum Gender {MALE, FEMALE};
 	private Gender gender;
+	
+	Date birthDate;
 
-	public User(String username, String password, Gender gender) {
+	public User(String username, String password, Gender gender, Date birthDate) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.isAdmin = 0;
 		this.gender = gender;
+		this.birthDate = birthDate;
 	}
-	
-	
 
 	public User(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
 	}
-
-
 
 	public Gender getGender() {
 		return gender;
@@ -79,5 +81,13 @@ public class User {
 	public void setIsAdmin(Integer isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-	
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,14 +19,16 @@ public class UserDaoImpl implements UserDao {
 		String username = user.getUsername();
 		String password = user.getPassword();
 		Gender gender = user.getGender();
+		Date birthDate = user.getBirthDate();
 		try {
-			String query = "INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`, `gender`) "
-					+ "VALUES (NULL, ?, ?, 0, ?)";
+			String query = "INSERT INTO `users` (`idusers`, `username`, `password`, `isAdmin`, `gender`, `birthDate`) "
+					+ "VALUES (NULL, ?, ?, 0, ?, ?)";
 
 			preparedStmt = connection.prepareStatement(query);
 			preparedStmt.setString(1, username);
 			preparedStmt.setString(2, password);
 			preparedStmt.setString(3, gender.toString());
+			preparedStmt.setDate(4, birthDate);
 			preparedStmt.execute();
 			System.out.println("Data is Successfully Inserted into users Table");
 			return true;
