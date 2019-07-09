@@ -10,6 +10,10 @@ import java.sql.Statement;
 import model.User;
 import model.User.Gender;
 
+/**
+ * Dao implementation class UserDaoImpl
+ * @author erdincozsertel
+ */
 public class UserDaoImpl implements UserDao {
 
 	@Override

@@ -14,6 +14,10 @@ import javax.servlet.ServletException;
 import model.Book;
 import model.Category;
 
+/**
+ * Dao implementation class BookDaoImpl
+ * @author erdincozsertel
+ */
 public class BookDaoImpl implements BookDao {
 
 	/*
@@ -143,7 +147,7 @@ public class BookDaoImpl implements BookDao {
 			preparedStmt.setString(5, bookCategory.toString());
 //			preparedStmt.setString(6, insertDate);
 			preparedStmt.setString(6, bookId);
-			
+
 			preparedStmt.execute();
 
 			System.out.println("Data is Successfully updated");

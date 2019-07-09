@@ -19,23 +19,13 @@ import model.Category;
 
 /**
  * Servlet implementation class IndexController
+ * 
+ * @author erdincozsertel
  */
 @WebServlet("")
 public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public IndexController() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -46,10 +36,6 @@ public class IndexController extends HttpServlet {
 		req.forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = null;
@@ -77,6 +63,16 @@ public class IndexController extends HttpServlet {
 		}
 	}
 
+	private void signUp(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/register.html");
+		req.forward(request, response);
+	}
+
+	private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/login.html");
+		req.forward(request, response);
+	}
+
 	private void bookRegister(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		CategoryDao categoryDao = new CategoryDaoImpl();
@@ -85,17 +81,4 @@ public class IndexController extends HttpServlet {
 		RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/bookRegister.jsp");
 		req.forward(request, response);
 	}
-
-	private void logIn(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
-		RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/login.html");
-		req.forward(request, response);
-	}
-
-	private void signUp(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
-		RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/register.html");
-		req.forward(request, response);
-	}
-
 }

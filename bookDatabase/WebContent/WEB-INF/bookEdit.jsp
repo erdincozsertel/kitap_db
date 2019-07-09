@@ -15,33 +15,33 @@
 
 				<tr>
 					<td>Book Name</td>
-					<td><input type="text" value=${bookList.bookName} name="bookName" /></td>
+					<td><input type="text" value=${bookList.bookName} name="bookName" required/></td>
 				</tr>
 				<tr>
 					<td>Writer Name</td>
-					<td><input type="text" value=${bookList.bookWriter} name="writerName" /></td>
+					<td><input type="text" value=${bookList.bookWriter} name="writerName" required/></td>
 				</tr>
 				<tr>
 					<td>Publisher Name</td>
-					<td><input type="text" value=${bookList.bookPublisher} name="publisherName" /></td>
+					<td><input type="text" value=${bookList.bookPublisher} name="publisherName" required/></td>
 				</tr>
 				<tr>
 					<td>Price</td>
-					<td><input type="number" step="0.01" min="0.01" max="999.99" value=${bookList.bookPrice} name="bookPrice"></td>
+					<td><input type="number" step="0.01" min="0.01" max="999.99" value=${bookList.bookPrice} name="bookPrice" required></td>
 				</tr>
 				<tr>
 					<td>Category</td>
-					<td><select input type="text" name="bCategory">
+					<td><select input type="text" name="bCategory" required>
 						<c:forEach items="${categoryList}" var="category">
 							<option value=${category.categoryId}>${category.categoryName}</option>
 						</c:forEach>
 				</select></td>
 				</tr>
 				<tr>
-					<td><input type="hidden" value=${bookList.bookId} name="bookId" /></td>
+					<td><input type="hidden" value=${bookList.bookId} name="bookId" required/></td>
 				</tr>
 				<tr>
-					<td><input type=hidden value=${bookList.insertDate} name="insertDate" /></td>
+					<td><input type=hidden value=${bookList.insertDate} name="insertDate" required/></td>
 				</tr>
 				<tr>
 					<td><input type="submit" name="editPage" value="Edit book"></td>

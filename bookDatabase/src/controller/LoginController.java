@@ -16,40 +16,38 @@ import model.User;
 
 /**
  * Servlet implementation class Login
+ * 
+ * @author erdincozsertel
  */
 @WebServlet("/loginController")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		PrintWriter pw = response.getWriter();
 		response.setContentType("text/html");
+		User user;
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		
-		User user = new User(username, password);
+		//TODO: password hashing
 
-		boolean loginStatus;
-		UserDao userDao = new UserDaoImpl();
-		loginStatus = userDao.isUser(user);
-
-		if (loginStatus) {
-			pw.println("Login Success...!");
-			// TODO Session start
-//			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/index.jsp");
-//			req.forward(request, response);
-			response.sendRedirect("/bookDatabase");
-		} else {
-			pw.println("Login Failed...!");
+		if (username.isEmpty() || password.isEmpty()) {
 			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/login.html");
 			req.forward(request, response);
+		} else {
+			user = new User(username, password);
+			boolean loginStatus;
+			UserDao userDao = new UserDaoImpl();
+			loginStatus = userDao.isUser(user);
+
+			if (loginStatus) {
+				// TODO Session start
+				response.sendRedirect("/bookDatabase");
+			} else {
+				RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/login.html");
+				req.forward(request, response);
+			}
 		}
-		pw.close();
 	}
 
 }

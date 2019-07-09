@@ -14,23 +14,23 @@
 
 			<tr>
 				<td>Book Name</td>
-				<td><input type="text" name="bookName" /></td>
+				<td><input type="text" name="bookName" required/></td>
 			</tr>
 			<tr>
 				<td>Writer Name</td>
-				<td><input type="text" name="writerName" /></td>
+				<td><input type="text" name="writerName" required/></td>
 			</tr>
 			<tr>
 				<td>Publisher Name</td>
-				<td><input type="text" name="publisherName" /></td>
+				<td><input type="text" name="publisherName" required/></td>
 			</tr>
 			<tr>
 				<td>Price</td>
-				<td><input type="number" step="0.01" min="0.01" max="999.99" name="bookPrice"></td>
+				<td><input type="number" step="0.01" min="0.01" max="999.99" name="bookPrice" required></td>
 			</tr>
 			<tr>
 				<td>Category</td>
-				<td><select input type="text" name="bCategory">
+				<td><select input type="text" name="bCategory" required>
 						<c:forEach items="${categoryList}" var="category">
 							<option value=${category.categoryId}>${category.categoryName}</option>
 						</c:forEach>

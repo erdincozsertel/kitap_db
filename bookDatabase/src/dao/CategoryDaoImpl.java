@@ -11,6 +11,10 @@ import javax.servlet.ServletException;
 
 import model.Category;
 
+/**
+ * Dao implementation class CategoryDaoImpl
+ * @author erdincozsertel
+ */
 public class CategoryDaoImpl implements CategoryDao {
 
 	@Override
@@ -82,7 +86,6 @@ public class CategoryDaoImpl implements CategoryDao {
 			String query = " SELECT `categoryName` FROM `categories` WHERE `categoryId` = ?";
 			preparedStmt = connection.prepareStatement(query);
 			preparedStmt.setString(1, categoryId.toString());
-
 
 			ResultSet rs = preparedStmt.executeQuery();
 			rs.next();
