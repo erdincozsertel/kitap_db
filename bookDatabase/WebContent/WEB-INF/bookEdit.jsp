@@ -26,11 +26,22 @@
 					<td><input type="text" value=${bookList.bookPublisher} name="publisherName" /></td>
 				</tr>
 				<tr>
-					<td>Category Name</td>
-					<td><input type="text" value=${bookList.bookCategory} name="categoryName" /></td>
+					<td>Price</td>
+					<td><input type="number" step="0.01" min="0.01" max="999.99" value=${bookList.bookPrice} name="bookPrice"></td>
+				</tr>
+				<tr>
+					<td>Category</td>
+					<td><select input type="text" name="bCategory">
+						<c:forEach items="${categoryList}" var="category">
+							<option value=${category.categoryId}>${category.categoryName}</option>
+						</c:forEach>
+				</select></td>
 				</tr>
 				<tr>
 					<td><input type="hidden" value=${bookList.bookId} name="bookId" /></td>
+				</tr>
+				<tr>
+					<td><input type=hidden value=${bookList.insertDate} name="insertDate" /></td>
 				</tr>
 				<tr>
 					<td><input type="submit" name="editPage" value="Edit book"></td>

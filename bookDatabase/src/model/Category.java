@@ -12,7 +12,6 @@ public class Category {
 	public Category(Integer categoryId) {
 		super();
 		this.categoryId = categoryId;
-		//TODO: add 
 		CategoryDao categoryDao = new CategoryDaoImpl();
 		this.categoryName = categoryDao.getCategoryName(categoryId);
 	}

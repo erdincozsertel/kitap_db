@@ -47,14 +47,18 @@
 				<th>Book Name</th>
 				<th>Book Writer</th>
 				<th>Book Publisher</th>
+				<th>Book Price</th>
 				<th>Book Category</th>
+				<th>Insert Date</th>
 			</tr>
 			<c:forEach items="${bookList}" var="book">
 				<tr>
 					<td>${book.bookName}</td>
 					<td>${book.bookWriter}</td>
 					<td>${book.bookPublisher}</td>
-					<td>${book.bookCategory}</td>
+					<td>${book.bookPrice}</td>
+					<td>${book.bookCategory.categoryName}</td>
+					<td>${book.insertDate}</td>
 <!-- 					<form action=bookController> -->
 <!-- 					<td><button type="submit" name="editButton" value=${book.bookId} formmethod="post">Edit</button></td> -->
 <!-- 					<td><button type="submit" name="deleteButton" value=${book.bookId}	formmethod="post">Delete!</button></td> -->

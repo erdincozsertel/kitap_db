@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.BookDao;
 import dao.BookDaoImpl;
+import dao.CategoryDao;
+import dao.CategoryDaoImpl;
 import model.Book;
 import model.Category;
 
@@ -84,11 +86,15 @@ public class BookController extends HttpServlet {
 	private void editBookPage(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 		BookDao bookDao = new BookDaoImpl();
+		CategoryDao categoryDao = new CategoryDaoImpl();
 		Book book = bookDao.getBook(Integer.valueOf(request.getParameter("editButton")));
 		if (book != null) {
+//			book.setInsertDate(book.getInsertDate().replace(' ', 'T'));
 			List<Book> bookList = new ArrayList<Book>();
 			bookList.add(book);
 			request.setAttribute("bookList", bookList);
+			List<Category> categoryList = categoryDao.getCategoryList();
+			request.setAttribute("categoryList", categoryList);
 			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/bookEdit.jsp");
 			req.forward(request, response);
 		} else {
@@ -135,10 +141,11 @@ public class BookController extends HttpServlet {
 		String writerName = request.getParameter("writerName");
 		String publisherName = request.getParameter("publisherName");
 		BigDecimal bookPrice = new BigDecimal(request.getParameter("bookPrice"));
-		Category bookCategory = new Category(Integer.valueOf(request.getParameter("categoryName")));
-		String insertDate = request.getParameter("bDate");
+		Category bookCategory = new Category(Integer.valueOf(request.getParameter("bCategory")));
+		String insertDate = request.getParameter("insertDate");
 //		Date insertDate = bookDao.getInsertDate(bookId);
 		Book book = new Book(bookId, bookName, writerName, publisherName, bookPrice, bookCategory, insertDate);
+		book.setInsertDate(book.getInsertDate().replace('T', ' '));
 		if (bookName.isEmpty() || writerName.isEmpty() || publisherName.isEmpty()) {
 			request.setAttribute("book", book);
 			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/bookEdit.jsp");

@@ -57,7 +57,7 @@ public class BookDaoImpl implements BookDao {
 		String bookPublisher = book.getBookPublisher();
 		BigDecimal bookPrice = book.getBookPrice();
 		Integer bookCategory = book.getBookCategory().getCategoryId();
-		String insertDate =  book.getInsertDate();
+		String insertDate = book.getInsertDate();
 //		String insertDate = "0000-00-00 00:00:00";
 //		Date insertDate = book.getInsertDate();
 
@@ -76,7 +76,7 @@ public class BookDaoImpl implements BookDao {
 			preparedStmt.setString(6, insertDate);
 			preparedStmt.execute();
 
-			System.out.println("Data is Successfully Inserted into users Table");
+			System.out.println("Data is Successfully Inserted into books Table");
 
 		} catch (SQLException e) {
 			System.out.println("Book save catch");
@@ -104,7 +104,7 @@ public class BookDaoImpl implements BookDao {
 				String bWriter = rs.getString("bWriter");
 				String bPublisher = rs.getString("bPublisher");
 				BigDecimal bPrice = rs.getBigDecimal("bPrice");
-				Category bCategory = new Category(Integer.valueOf(rs.getString("bCategory")));
+				Category bCategory = new Category(Integer.valueOf(rs.getString("categoryId")));
 				String insertDate = rs.getString("bDate");
 //				Date insertDate = getInsertDate(bId);
 				Book book = new Book(bId, bName, bWriter, bPublisher, bPrice, bCategory, insertDate);
@@ -127,24 +127,29 @@ public class BookDaoImpl implements BookDao {
 		String bookName = book.getBookName();
 		String bookWriter = book.getBookWriter();
 		String bookPublisher = book.getBookPublisher();
+		BigDecimal bookPrice = book.getBookPrice();
 		Integer bookCategory = book.getBookCategory().getCategoryId();
+//		String insertDate = book.getInsertDate();
 
 		try {
 
-			String query = " UPDATE `books` SET `bName` = ?, `bWriter` = ?, `bPublisher` = ?, `bCategory` = ? WHERE `books`.`bId` = ?";
+			String query = "UPDATE `books` SET `bName` = ?, `bWriter` = ?, `bPublisher` = ?, `bPrice` = ?, `categoryId` = ? WHERE `books`.`bId` = ?";
 			preparedStmt = connection.prepareStatement(query);
 
 			preparedStmt.setString(1, bookName);
 			preparedStmt.setString(2, bookWriter);
 			preparedStmt.setString(3, bookPublisher);
-			preparedStmt.setLong(4, bookCategory);
-			preparedStmt.setString(5, bookId);
+			preparedStmt.setString(4, bookPrice.toString());
+			preparedStmt.setString(5, bookCategory.toString());
+//			preparedStmt.setString(6, insertDate);
+			preparedStmt.setString(6, bookId);
+			
 			preparedStmt.execute();
 
 			System.out.println("Data is Successfully updated");
 
 		} catch (SQLException e) {
-			System.out.println("Book save catch");
+			System.out.println("Book update catch");
 			e.printStackTrace();
 		} finally {
 			DaoConnection.closeAll(preparedStmt, connection);
@@ -206,7 +211,7 @@ public class BookDaoImpl implements BookDao {
 			bookWriter = rs.getString("bWriter");
 			bookPublisher = rs.getString("bPublisher");
 			bookPrice = rs.getBigDecimal("bPrice");
-			bookCategory = new Category(Integer.valueOf(rs.getString("bCategory")));
+			bookCategory = new Category(Integer.valueOf(rs.getString("categoryId")));
 			insertDate = rs.getString("bDate");
 //			insertDate = getInsertDate(bookId);
 			book = new Book(bookId, bookName, bookWriter, bookPublisher, bookPrice, bookCategory, insertDate);
