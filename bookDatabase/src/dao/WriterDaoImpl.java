@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,27 +10,31 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 
-import model.Category;
+import model.Writer;
+import model.Writer.Gender;
 
 /**
- * Dao implementation class CategoryDaoImpl
+ * Dao implementation class WriterDaoImpl
  * 
  * @author erdincozsertel
  */
-public class CategoryDaoImpl implements CategoryDao {
+public class WriterDaoImpl implements WriterDao {
 
 	@Override
-	public boolean save(Category category) {
+	public boolean save(Writer writer) {
 		Connection connection = DaoConnection.connect();
 		PreparedStatement preparedStmt = null;
-		String categoryName = category.getCategoryName();
+		String writerName = writer.getWriterName();
+		Gender gender = writer.getGender() ;
+		Date birthDate = writer.getBirthDate();
 		try {
-			String query = " INSERT INTO `categories` (`categoryId`, `categoryName`) VALUES (NULL, ?)";
-
+			String query = "INSERT INTO `writers` (`writerId`, `writerName`, `gender`, `writerBirthDay`) VALUES (NULL, ?, ?, ?);";
 			preparedStmt = connection.prepareStatement(query);
-			preparedStmt.setString(1, categoryName);
+			preparedStmt.setString(1, writerName);
+			preparedStmt.setString(2, gender.toString());
+			preparedStmt.setDate(3, birthDate);
 			preparedStmt.execute();
-			System.out.println("Data is Successfully Inserted into category Table");
+			System.out.println("Data is Successfully Inserted into writers Table");
 			return true;
 
 		} catch (SQLException e) {
@@ -42,29 +47,29 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public void update(Category category) {
+	public void update(Writer writer) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void delete(Integer categoryId) {
+	public void delete(Integer writerId) {
 		Connection connection = DaoConnection.connect();
 		PreparedStatement preparedStmt = null;
 		System.out.println("ok");
 		try {
 
-			String query = " DELETE FROM `categories` WHERE `categoryId`= ? ";
+			String query = " DELETE FROM `writers` WHERE `writerId`= ? ";
 
 			preparedStmt = connection.prepareStatement(query);
-			preparedStmt.setLong(1, categoryId);
+			preparedStmt.setLong(1, writerId);
 
 			preparedStmt.execute();
 
 			System.out.println("Data is Successfully Deleted.");
 
 		} catch (SQLException e) {
-			System.out.println("Category delete catch");
+			System.out.println("Writer delete catch");
 			e.printStackTrace();
 		} finally {
 			DaoConnection.closeAll(preparedStmt, connection);
@@ -72,21 +77,24 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public List<Category> getCategoryList() throws ServletException {
+	public List<Writer> getWriterList() throws ServletException {
 		Connection connection = DaoConnection.connect();
 		PreparedStatement preparedStmt = null;
 		try {
-			String query = " SELECT * FROM `categories` ";
+			String query = " SELECT * FROM `writers` ";
 			preparedStmt = connection.prepareStatement(query);
 
 			ResultSet rs = preparedStmt.executeQuery(query);
-			List<Category> list = new ArrayList<Category>();
+			List<Writer> list = new ArrayList<Writer>();
 
 			while (rs.next()) {
-				Integer categoryId = rs.getInt("categoryId");
-				String categoryName = rs.getString("categoryName");
-				Category bCategory = new Category(categoryId, categoryName);
-				list.add(bCategory);
+				Integer writerId = rs.getInt("writerId");
+				String writerName = rs.getString("writerName");
+				Gender gender = Gender.valueOf(rs.getString("gender"));
+				Date birthDate = rs.getDate("writerBirthDay");
+				Writer bWriter = new Writer(writerId, writerName, gender, birthDate);
+				bWriter.setWriterName(bWriter.getWriterName().replace('_', ' '));
+				list.add(bWriter);
 			}
 			return list;
 		} catch (SQLException e) {
@@ -98,19 +106,19 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public String getCategoryName(Integer categoryId) {
+	public String getWriterName(Integer writerId) {
 		Connection connection = DaoConnection.connect();
 		PreparedStatement preparedStmt = null;
 		try {
-			String query = " SELECT `categoryName` FROM `categories` WHERE `categoryId` = ?";
+			String query = " SELECT `writerName` FROM `categories` WHERE `writerId` = ?";
 			preparedStmt = connection.prepareStatement(query);
-			preparedStmt.setString(1, categoryId.toString());
+			preparedStmt.setString(1, writerId.toString());
 
 			ResultSet rs = preparedStmt.executeQuery();
 			rs.next();
 
-			String categoryName = rs.getString("categoryName");
-			return categoryName;
+			String writerName = rs.getString("writerName");
+			return writerName;
 		} catch (SQLException e) {
 			System.out.println("An error occured while retrieving " + "all categories: " + e.toString());
 		} finally {
@@ -120,15 +128,17 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public Category getCategory(Integer categoryId) {
+	public Writer getWriter(Integer writerId) {
 		Connection connection = DaoConnection.connect();
 		PreparedStatement preparedStmt = null;
-		String wId = categoryId.toString();
-		String categoryName;
-		Category category = null;
+		String wId = writerId.toString();
+		String writerName;
+		Gender gender;
+		Date birthDate;
+		Writer writer = null;
 		try {
 
-			String query = "SELECT * FROM `categories` WHERE `categoryId` = ?";
+			String query = "SELECT * FROM `writers` WHERE `writerId` = ?";
 
 			preparedStmt = connection.prepareStatement(query);
 			preparedStmt.setString(1, wId);
@@ -139,15 +149,17 @@ public class CategoryDaoImpl implements CategoryDao {
 
 //			while (rs.next()) {
 			rs.next();
-			categoryName = rs.getString("categoryName");
-
-			category = new Category(categoryId, categoryName);
+			writerName = rs.getString("writerName");
+			gender = Gender.valueOf(rs.getString("gender"));
+			birthDate = rs.getDate("writerBirthDay");
+			
+			writer = new Writer(writerId, writerName, gender, birthDate);
 //			}
-			System.out.println("Category is Successfully Found.");
-			return category;
+			System.out.println("Writer is Successfully Found.");
+			return writer;
 
 		} catch (SQLException e) {
-			System.out.println("Category select catch");
+			System.out.println("Writer select catch");
 			e.printStackTrace();
 		} finally {
 			DaoConnection.closeAll(preparedStmt, connection);

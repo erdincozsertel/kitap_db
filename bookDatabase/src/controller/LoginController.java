@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,13 +22,14 @@ import model.User;
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html");
 		User user;
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		//TODO: password hashing
+		// TODO: password hashing
 
 		if (username.isEmpty() || password.isEmpty()) {
 			RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/login.html");

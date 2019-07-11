@@ -10,7 +10,7 @@
 <title>JSP List Book Records</title>
 </head>
 <body>
-
+	<a href="/bookDatabase">Return to Index</a>
 	<div align="center">
 		<table border="1" cellpadding="5">
 			<caption>List of books</caption>
@@ -28,7 +28,7 @@
 			<c:forEach items="${bookList}" var="book">
 				<tr>
 					<td>${book.bookName}</td>
-					<td>${book.bookWriter}</td>
+					<td>${book.bookWriter.writerName}</td>
 					<td>${book.bookPublisher}</td>
 					<td>${book.bookPrice}</td>
 					<td>${book.bookCategory.categoryName}</td>

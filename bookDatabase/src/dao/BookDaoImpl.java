@@ -13,43 +13,14 @@ import javax.servlet.ServletException;
 
 import model.Book;
 import model.Category;
+import model.Writer;
 
 /**
  * Dao implementation class BookDaoImpl
+ * 
  * @author erdincozsertel
  */
 public class BookDaoImpl implements BookDao {
-
-	/*
-	 * public boolean isExist(Book book) { // TODO: will fix query // Book
-	 * Controller // String bookId = book.getBookId().toString(); String bookName =
-	 * book.getBookName(); String bookWriter = book.getBookWriter(); String
-	 * bookPublisher = book.getBookPublisher(); Integer bookCategory =
-	 * book.getBookCategory().getCategoryId();
-	 * 
-	 * try { Class.forName("com.mysql.jdbc.Driver"); Connection conn =
-	 * DriverManager.getConnection("jdbc:mysql://localhost:3306/test_book_db",
-	 * "root", ""); // the mysql insert statement String query =
-	 * " SELECT * FROM `books` WHERE bName = ? AND bWriter = ? AND bPublisher = ? AND bCategory = ? "
-	 * ;
-	 * 
-	 * // create the mysql insert preparedstatement PreparedStatement preparedStmt =
-	 * conn.prepareStatement(query); // preparedStmt.setString(1, bookId);
-	 * preparedStmt.setString(1, bookName); preparedStmt.setString(2, bookWriter);
-	 * preparedStmt.setString(3, bookPublisher); preparedStmt.setString(4,
-	 * bookCategory.toString());
-	 * 
-	 * System.out.println(preparedStmt);
-	 * 
-	 * // execute the preparedstatement preparedStmt.execute();
-	 * System.out.println(preparedStmt.getResultSet()); if
-	 * (preparedStmt.getResultSet() != null) { System.out.println("Book Exist!");
-	 * return true; } else { System.out.println("Book does not Exist!"); return
-	 * false; }
-	 * 
-	 * } catch (Exception e) { System.out.println("Book Exist catch!");
-	 * System.out.println(e); return true; } }
-	 */
 
 	@Override
 	public void save(Book book) {
@@ -57,7 +28,7 @@ public class BookDaoImpl implements BookDao {
 		Connection connection = DaoConnection.connect();
 		PreparedStatement preparedStmt = null;
 		String bookName = book.getBookName();
-		String bookWriter = book.getBookWriter();
+		Integer bookWriter = book.getBookWriter().getWriterId();
 		String bookPublisher = book.getBookPublisher();
 		BigDecimal bookPrice = book.getBookPrice();
 		Integer bookCategory = book.getBookCategory().getCategoryId();
@@ -68,12 +39,12 @@ public class BookDaoImpl implements BookDao {
 		try {
 
 			String query = "INSERT INTO `books` "
-					+ "(`bId`, `bName`, `bWriter`, `bPublisher`, `bPrice`, `categoryId`, `bDate`) "
+					+ "(`bId`, `bName`, `writerId`, `bPublisher`, `bPrice`, `categoryId`, `bDate`) "
 					+ "VALUES (NULL, ?, ?, ?, ?, ?, ?)";
 
 			preparedStmt = connection.prepareStatement(query);
 			preparedStmt.setString(1, bookName);
-			preparedStmt.setString(2, bookWriter);
+			preparedStmt.setString(2, bookWriter.toString());
 			preparedStmt.setString(3, bookPublisher);
 			preparedStmt.setString(4, bookPrice.toString());
 			preparedStmt.setString(5, bookCategory.toString());
@@ -105,8 +76,11 @@ public class BookDaoImpl implements BookDao {
 			while (rs.next()) {
 				Integer bId = rs.getInt("bId");
 				String bName = rs.getString("bName");
-				String bWriter = rs.getString("bWriter");
+				bName = bName.replace('_', ' ');
+				Writer bWriter = new Writer(Integer.valueOf(rs.getString("writerId")));
+				bWriter.setWriterName(bWriter.getWriterName().replace('_', ' '));
 				String bPublisher = rs.getString("bPublisher");
+				bPublisher = bPublisher.replace('_', ' ');
 				BigDecimal bPrice = rs.getBigDecimal("bPrice");
 				Category bCategory = new Category(Integer.valueOf(rs.getString("categoryId")));
 				String insertDate = rs.getString("bDate");
@@ -129,7 +103,7 @@ public class BookDaoImpl implements BookDao {
 		PreparedStatement preparedStmt = null;
 		String bookId = book.getBookId().toString();
 		String bookName = book.getBookName();
-		String bookWriter = book.getBookWriter();
+		Integer bookWriter = book.getBookWriter().getWriterId();
 		String bookPublisher = book.getBookPublisher();
 		BigDecimal bookPrice = book.getBookPrice();
 		Integer bookCategory = book.getBookCategory().getCategoryId();
@@ -137,11 +111,11 @@ public class BookDaoImpl implements BookDao {
 
 		try {
 
-			String query = "UPDATE `books` SET `bName` = ?, `bWriter` = ?, `bPublisher` = ?, `bPrice` = ?, `categoryId` = ? WHERE `books`.`bId` = ?";
+			String query = "UPDATE `books` SET `bName` = ?, `writerId` = ?, `bPublisher` = ?, `bPrice` = ?, `categoryId` = ? WHERE `books`.`bId` = ?";
 			preparedStmt = connection.prepareStatement(query);
 
 			preparedStmt.setString(1, bookName);
-			preparedStmt.setString(2, bookWriter);
+			preparedStmt.setString(2, bookWriter.toString());
 			preparedStmt.setString(3, bookPublisher);
 			preparedStmt.setString(4, bookPrice.toString());
 			preparedStmt.setString(5, bookCategory.toString());
@@ -182,7 +156,6 @@ public class BookDaoImpl implements BookDao {
 		} finally {
 			DaoConnection.closeAll(preparedStmt, connection);
 		}
-
 	}
 
 	@Override
@@ -191,7 +164,7 @@ public class BookDaoImpl implements BookDao {
 		PreparedStatement preparedStmt = null;
 		String bId = bookId.toString();
 		String bookName;
-		String bookWriter;
+		Writer bookWriter;
 		String bookPublisher;
 		BigDecimal bookPrice;
 		Category bookCategory;
@@ -212,7 +185,7 @@ public class BookDaoImpl implements BookDao {
 //			while (rs.next()) {
 			rs.next();
 			bookName = rs.getString("bName");
-			bookWriter = rs.getString("bWriter");
+			bookWriter = new Writer(Integer.valueOf(rs.getString("writerId")));
 			bookPublisher = rs.getString("bPublisher");
 			bookPrice = rs.getBigDecimal("bPrice");
 			bookCategory = new Category(Integer.valueOf(rs.getString("categoryId")));

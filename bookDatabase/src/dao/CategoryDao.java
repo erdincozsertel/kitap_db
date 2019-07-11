@@ -10,12 +10,14 @@ public interface CategoryDao {
 
 	boolean save(Category category);
 
-	void update(Category category, String[] params);
+	void update(Category category);
 
-	void delete(Category category);
+	void delete(Integer categoryId);
 
 	List<Category> getCategoryList() throws ServletException;
 	
 	String getCategoryName(Integer categoryId);
+	
+	Category getCategory(Integer categoryId);
 
 }

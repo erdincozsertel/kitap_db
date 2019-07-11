@@ -15,21 +15,17 @@ public class Category {
 		CategoryDao categoryDao = new CategoryDaoImpl();
 		this.categoryName = categoryDao.getCategoryName(categoryId);
 	}
-	
 
 	public Category(String categoryName) {
 		super();
 		this.categoryName = categoryName;
 	}
-	
-	
 
 	public Category(Integer categoryId, String categoryName) {
 		super();
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
 	}
-
 
 	public Integer getCategoryId() {
 		return categoryId;

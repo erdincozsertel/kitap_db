@@ -34,10 +34,14 @@
 	<!-- Show List according to chosen List in drop down menu -->
 	<form action="bookController" style="border: 1px solid #ccc"
 		method="get">
-
 		<input type="submit" value="Show BookList">
-
 	</form>
+	<form action="others" style="border: 1px solid #ccc"
+		method="get">
+		<input type="submit" value="Edit Other Values">
+	</form>	
+	
+	
 	<div align="center">
 		<table border="1" cellpadding="5">
 			<caption>List of books</caption>
@@ -54,7 +58,7 @@
 			<c:forEach items="${bookList}" var="book">
 				<tr>
 					<td>${book.bookName}</td>
-					<td>${book.bookWriter}</td>
+					<td>${book.bookWriter.writerName}</td>
 					<td>${book.bookPublisher}</td>
 					<td>${book.bookPrice}</td>
 					<td>${book.bookCategory.categoryName}</td>

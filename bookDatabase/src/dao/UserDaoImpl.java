@@ -47,13 +47,13 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void update(User user, String[] params) {
+	public void update(User user) {
 		// TODO This function will update user data in db
 
 	}
 
 	@Override
-	public void delete(User user) {
+	public void delete(Integer userId) {
 		// TODO This function will delete user from db
 	}
 

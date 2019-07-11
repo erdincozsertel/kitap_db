@@ -8,6 +8,7 @@
 <title>Registration Form</title>
 </head>
 <body>
+<a href="/bookDatabase">Return to Index</a>
 	<h1>Register Form</h1>
 	<form action="bookController" method="post">
 		<table style="with: 50%">
@@ -18,7 +19,11 @@
 			</tr>
 			<tr>
 				<td>Writer Name</td>
-				<td><input type="text" name="writerName" required/></td>
+				<td><select input type="text" name="bookWriter" required>
+						<c:forEach items="${writerList}" var="writer">
+							<option value=${writer.writerId}>${writer.writerName}</option>
+						</c:forEach>
+				</select></td>
 			</tr>
 			<tr>
 				<td>Publisher Name</td>

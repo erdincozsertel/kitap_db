@@ -6,9 +6,9 @@ public interface UserDao {
 	
 	boolean save (User user);
 	
-	void update (User user, String[] params);
+	void update (User user);
 	
-	void delete(User user);
+	void delete(Integer userId);
 	
 	Boolean isUser(User user);
 	

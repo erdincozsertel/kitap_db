@@ -14,14 +14,18 @@ import dao.BookDao;
 import dao.BookDaoImpl;
 import dao.CategoryDao;
 import dao.CategoryDaoImpl;
+import dao.WriterDao;
+import dao.WriterDaoImpl;
 import model.Book;
 import model.Category;
+import model.Writer;
 
 /**
  * Servlet implementation class IndexController
  * 
  * @author erdincozsertel
  */
+
 @WebServlet("")
 public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -36,6 +40,7 @@ public class IndexController extends HttpServlet {
 		req.forward(request, response);
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = null;
@@ -45,6 +50,8 @@ public class IndexController extends HttpServlet {
 			action = "LogIn";
 		} else if (request.getParameter("BookRegister") != null) {
 			action = "BookRegister";
+		} else if (request.getParameter("EditDropdown") != null) {
+			action = "EditDropdown";
 		}
 
 		try {
@@ -54,6 +61,8 @@ public class IndexController extends HttpServlet {
 				logIn(request, response);
 			} else if (action == "BookRegister") {
 				bookRegister(request, response);
+			} else if (action == "EditDropdown") {
+				editDropdown(request, response);
 			} else {
 				RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/index.jsp");
 				req.forward(request, response);
@@ -76,9 +85,21 @@ public class IndexController extends HttpServlet {
 	private void bookRegister(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		CategoryDao categoryDao = new CategoryDaoImpl();
+		WriterDao writerDao = new WriterDaoImpl();
+		List<Category> categoryList = categoryDao.getCategoryList();
+		List<Writer> writerList = writerDao.getWriterList();
+		request.setAttribute("categoryList", categoryList);
+		request.setAttribute("writerList", writerList);
+		RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/bookRegister.jsp");
+		req.forward(request, response);
+	}
+
+	private void editDropdown(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		CategoryDao categoryDao = new CategoryDaoImpl();
 		List<Category> categoryList = categoryDao.getCategoryList();
 		request.setAttribute("categoryList", categoryList);
-		RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/bookRegister.jsp");
+		RequestDispatcher req = request.getRequestDispatcher("/WEB-INF/editOthers.jsp");
 		req.forward(request, response);
 	}
 }
