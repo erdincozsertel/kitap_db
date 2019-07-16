@@ -25,10 +25,11 @@ public class WriterDaoImpl implements WriterDao {
 		Connection connection = DaoConnection.connect();
 		PreparedStatement preparedStmt = null;
 		String writerName = writer.getWriterName();
-		Gender gender = writer.getGender() ;
+		Gender gender = writer.getGender();
 		Date birthDate = writer.getBirthDate();
 		try {
-			String query = "INSERT INTO `writers` (`writerId`, `writerName`, `gender`, `writerBirthDay`) VALUES (NULL, ?, ?, ?);";
+			String query = "INSERT INTO `writers` (`writerId`, `writerName`, `gender`, `writerBirthDay`) "
+					+ "VALUES (NULL, ?, ?, ?);";
 			preparedStmt = connection.prepareStatement(query);
 			preparedStmt.setString(1, writerName);
 			preparedStmt.setString(2, gender.toString());
@@ -152,7 +153,7 @@ public class WriterDaoImpl implements WriterDao {
 			writerName = rs.getString("writerName");
 			gender = Gender.valueOf(rs.getString("gender"));
 			birthDate = rs.getDate("writerBirthDay");
-			
+
 			writer = new Writer(writerId, writerName, gender, birthDate);
 //			}
 			System.out.println("Writer is Successfully Found.");
