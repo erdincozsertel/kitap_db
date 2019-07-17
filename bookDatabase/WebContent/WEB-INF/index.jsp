@@ -15,68 +15,72 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <title>Index Page</title>
 <link rel="stylesheet" type="text/css" href="main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <nav class="navbar navbar-expand-md">
-      <a class="navbar-brand" href="/bookDatabase">Logo</a>
-      <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#main-navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="main-navigation">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/bookDatabase">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="bookController" method="get" >Book List</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    	<strong>Holy guacamole!</strong> You should check in on some of those fields below.
-  		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    		<span aria-hidden="true">&times;</span>
-  		</button>
+	<div class="clearfix">
+    	<nav class="navbar navbar-expand-md container-fluid p-2 ">
+    	  <a class="navbar-brand" href="/bookDatabase"><img src="book.png" alt="logo" style="width:70px;"></a>
+    	  <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#main-navigation">
+    	    <span class="navbar-toggler-icon"></span>
+    	  </button>
+    	  <div class="collapse navbar-collapse" id="main-navigation">
+    	    <ul class="navbar-nav">
+    	      <li class="nav-item">
+    	        <a class="nav-link" href="/bookDatabase">Home</a>
+    	      </li>
+    	      <li class="nav-item">
+    	        <a class="nav-link" href="bookController" method="get" >Book List</a>
+    	      </li>
+    	    </ul>
+    	  </div>
+    	</nav>
+    </div>
+<!--     <div class="alert alert-warning alert-dismissible fade show" role="alert"> -->
+<!--     	<strong>Holy guacamole!</strong> You should check in on some of those fields below. -->
+<!--   		<button type="button" class="close" data-dismiss="alert" aria-label="Close"> -->
+<!--     		<span aria-hidden="true">&times;</span> -->
+<!--   		</button> -->
+<!-- 	</div> -->
+<!-- 	<div class="alert alert-danger alert-dismissible" runat ="server" id="modalEditError" visible ="false"> -->
+<!--   		<button class="close" type="button" data-dismiss="alert">×</button> -->
+<!--   		<strong>The updated interview information was not saved!</strong> <div id="Div2" runat="server" ></div> -->
+<!-- 	</div> -->
+
+	<h1 class="p-1">Main Page</h1>
+	<form action="" method="post" id="SignUpForm"></form>
+	<form action="" method="post" id="LogInForm"></form>
+	<form action="" method="post" id="BookRegisterForm"></form>
+	<form action="bookController" method="get" id="ShowBookListForm"></form>
+	<form action="others" method="get" id="EditOthersForm"></form>	
+
+
+<!-- <div class="row container-fluid clearfix"> -->
+	<div class="clearfix p-3"> 
+		
+		<!-- Show only when not in Session -->
+		<button type="submit" form="SignUpForm" class="btn btn-primary btn-lg float-md-right m-1" name="SignUp" value="Sign Up">Sign Up</button>
+		
+		<!-- Show only when not in Session -->
+		<button type="submit" form="LogInForm" class="btn btn-secondary float-sm-right m-1" name="LogIn" value="Log In">Log In</button>
+		
+		<!-- Show only when user is a admin-->
+		<button type="submit" form="BookRegisterForm" class="btn btn-info btn-sm active" name="BookRegister" value="Book Register">Book Register</button>
+		
+		<!-- Show only when in Session -->
+		<!-- Drop Down List of available lists -->
+		<!-- Show List according to chosen List in drop down menu -->
+		<button type="submit" form="ShowBookListForm" class="btn btn-info btn-sm active" value="Show BookList">Show BookList</button>
+		
+		<!-- Show only when user is a admin-->
+		<button type="submit" form="EditOthersForm" class="btn btn-info btn-sm active" value="Edit Other Values">Edit Other Values</button>
+		
 	</div>
-	<div class="alert alert-danger alert-dismissible" runat ="server" id="modalEditError" visible ="false">
-  		<button class="close" type="button" data-dismiss="alert">×</button>
-  		<strong>The updated interview information was not saved!</strong> <div id="Div2" runat="server" ></div>
-	</div>
-	<h1>Index Page</h1>
-
-	<!-- Show only when not in Session -->
-	<form action="" 
-		method="post">
-		<input type="submit" class="btn btn-primary btn-lg" name="SignUp" value="Sign Up">
-	</form>
-
-	<!-- Show only when not in Session -->
-	<form action=""  method="post">
-		<input type="submit" class="btn btn-secondary" name="LogIn" value="Log In">
-	</form>
-
-	<!-- Show only when user is a admin-->
-	<form action="" 
-		method="post">
-		<input type="submit" class="btn btn-info btn-sm active" name="BookRegister" value="Book Register">
-	</form>
-
-	<!-- Show only when in Session -->
-	<!-- Drop Down List of available lists -->
-	<!-- Show List according to chosen List in drop down menu -->
-	<form action="bookController" 
-		method="get">
-		<input type="submit" class="btn btn-info btn-sm active" value="Show BookList">
-	</form>
-	<form action="others" 
-		method="get">
-		<input type="submit" class="btn btn-info btn-sm active" value="Edit Other Values">
-	</form>	
 	
+	<button type="button" class="btn btn-primary  ml-1" data-toggle="collapse" data-target="#bList">Book List</button>
 	
-	<div align="center">
-		<table border="1" cellpadding="5" class="table table-bordered table-light table-striped table-hover table-sm">
+	<div id="bList" class="collapse show p-1" align="center">
+		<table border="1" cellpadding="5" class="table table-responsive-sm table-bordered table-light table-striped table-hover table-sm p-1">
 			<h1>List of books</h1>
 			<thead class="thead-dark">
 			<tr>
@@ -106,5 +110,8 @@
 			</c:forEach>
 		</table>
 	</div>
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-bottom">
+		
+	</nav>
 </body>
 </html>
